@@ -26,6 +26,7 @@ async function run() {
     const usersCollection = database.collection("users");
     const quizzesCollection = database.collection("quizzes");
     const quizCollection = database.collection("quiz");
+    const quizInfo = database.collection("quizInfo");
     console.log("connected successfully ");
 
     //get quizzes from database
@@ -119,6 +120,22 @@ async function run() {
       const result = await quizzesCollection.insertOne(quizQues);
       res.json(result);
     });
+
+    //add Quiz And UserInfo to database
+    app.post("/quizInfo", async (req, res) => {
+      const info = req.body;
+      const result = await quizInfo.insertOne(info);
+      res.json(result);
+    });
+
+    //get all info from quiz Info
+    app.get("/quizInfo", async (req, res) => {
+      const cursor = quizInfo.find({});
+      const result = await cursor.toArray();
+      res.json(result);
+    });
+
+    //
   } finally {
     // await client.close()
   }
